@@ -28,8 +28,12 @@ with Image.open(first_img_path).convert('LA') as first:
         for x in range(width):
             for y in range(height):
                 if not numpy.array_equal([127, 127, 127], np_im[x][y]):
+                    diffed_pixel = np_im[x][y]
                     difference += 1
-                    np_im[x][y] = [127, 0, 0]
+                    diff_color = 255 - 2 * abs(127 - diffed_pixel[0])
+                    np_im[x][y] = [255, diff_color, diff_color]
+                else:
+                    np_im[x][y] = [255, 255, 255]
         
         print("{:.2%}".format(difference / (width * height)))
         new_im = Image.fromarray(np_im)
